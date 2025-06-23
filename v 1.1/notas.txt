@@ -1,0 +1,1 @@
+se agrego lematizacion y stopwords, asi como nuevo dataset mas limpio
