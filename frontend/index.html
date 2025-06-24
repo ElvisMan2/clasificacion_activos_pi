@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Identificador de PI</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard {
+            width: 80%;
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        #logoutBtn {
+            padding: 8px 16px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        #analyzeBtn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .result-card {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h2>Identificador de Propiedad Intelectual</h2>
+        </header>
+        <main>
+            <div class="input-section">
+                <h3>Describe tu creación:</h3>
+                <textarea id="descriptionInput" placeholder="Ej: 'Un nuevo sistema de riego automatizado para agricultura...'"></textarea>
+                <button id="analyzeBtn" onclick="showResult()">Analizar con IA</button>
+            </div>
+            <div id="resultSection" style="display: none;">
+                <h3>Resultado:</h3>
+                <div class="result-card">
+                    <p><strong>Tipo de PI:</strong> <span id="piType">Patente</span></p>
+                    <p><strong>Descripción legal:</strong> Protege invenciones técnicas con aplicación industrial.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        async function showResult() {
+    const descripcion = document.getElementById("descriptionInput").value;
+
+    if (!descripcion.trim()) {
+        alert("Por favor ingresa una descripción.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ descripcion: descripcion })
+        });
+
+        if (!response.ok) {
+            throw new Error("Error al obtener la predicción.");
+        }
+
+        const data = await response.json();
+
+        // Mostrar resultados
+        document.getElementById("piType").textContent = data.categoria_predicha;
+
+        // (Opcional) Puedes mostrar diferentes textos legales según la categoría
+        const legalTextMap = {
+            "Patente": "Protege invenciones técnicas con aplicación industrial.",
+            "Derecho de autor": "Protege obras artísticas, literarias o científicas.",
+            "Marca": "Identifica y distingue productos o servicios en el mercado."
+        };
+
+        document.querySelector("#resultSection p:nth-of-type(2)").textContent =
+            legalTextMap[data.categoria_predicha] || "Sin información adicional.";
+
+        document.getElementById("resultSection").style.display = "block";
+    } catch (error) {
+        console.error(error);
+        alert("Hubo un error al consultar la API.");
+    }
+}
+
+    </script>
+</body>
+</html>
