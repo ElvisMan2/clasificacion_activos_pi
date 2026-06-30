@@ -25,3 +25,7 @@ dist/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Caché de Python
+backend/__pycache__/
+**/__pycache__/
