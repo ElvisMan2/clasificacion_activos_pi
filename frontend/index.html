@@ -22,9 +22,22 @@
         }
         header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             margin-bottom: 2rem;
+            gap: 1rem;
+            text-align: center;
+        }
+        header img {
+            max-width: 360px;
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        header p {
+            margin: 0;
+            text-align: justify;
+            line-height: 1.6;
         }
         #logoutBtn {
             padding: 8px 16px;
@@ -103,12 +116,17 @@
     </div>
     <div class="dashboard">
         <header>
-            <h2>Identificador de Propiedad Intelectual</h2>
+            <img src="./images/logo.png" alt="">
+            <p>Identipat IA es una evolución tecnológica del servicio del 
+                Indecopi que integra inteligencia artificial para transformar 
+                el análisis de viabilidad de patentes en Perú. Esta herramienta permite
+                orientar a los creadores a seleccionar la opción más adecuada para proteger
+                para su creación.</p>
         </header>
         <main>
             <div class="input-section">
                 <h3>Describe tu creación:</h3>
-                <textarea id="descriptionInput" placeholder="Ej: 'Un nuevo sistema de riego automatizado para agricultura...'"></textarea>
+                <textarea id="descriptionInput" placeholder="Ejemplo: 'Un nuevo sistema de riego automatizado para agricultura...'"></textarea>
                 <button id="analyzeBtn" onclick="showResult()">Analizar con IA</button>
             </div>
             <div id="resultSection" style="display: none;">
