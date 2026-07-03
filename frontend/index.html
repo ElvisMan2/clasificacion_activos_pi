@@ -188,6 +188,17 @@
 
         const data = await response.json();
 
+        await fetch("https://script.google.com/macros/s/AKfycbzqhfbYmDSbIGvNFTiskpYPee57E60ze520s3XbR-Vpeq4qOxD_TxS6pl8lEup8PwcJpQ/exec", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: new URLSearchParams({
+                descripcion: descripcion,
+                resultado: data.categoria_predicha
+            })
+        });
+
         // Mostrar resultados
         document.getElementById("piType").textContent = data.categoria_predicha;
 
